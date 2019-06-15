@@ -66,11 +66,11 @@ abstract class IBaseActivity<T : Activity> : AppCompatActivity() {
     /**
      * 事件
      */
-    protected fun registerEventBus(subscriber: Any) {
+    fun registerEventBus(subscriber: Any) {
         if (!EventBus.getDefault().isRegistered(subscriber)) EventBus.getDefault().register(subscriber)
     }
 
-    protected fun unregisterEventBus(subscriber: Any) {
+    fun unregisterEventBus(subscriber: Any) {
         if (EventBus.getDefault().isRegistered(subscriber)) EventBus.getDefault().unregister(subscriber)
     }
 
@@ -78,20 +78,20 @@ abstract class IBaseActivity<T : Activity> : AppCompatActivity() {
      * 短提示
      * @param msg 消息内容
      */
-    protected fun toastShow(msg: String) = Toast.makeText(applicationContext, msg, Toast.LENGTH_SHORT).show()
+    fun toastShow(msg: String) = Toast.makeText(applicationContext, msg, Toast.LENGTH_SHORT).show()
 
     /**
      * 短提示
      * @param resId 资源内容
      */
-    protected fun toastShow(resId: Int) = Toast.makeText(applicationContext, resId, Toast.LENGTH_SHORT).show()
+    fun toastShow(resId: Int) = Toast.makeText(applicationContext, resId, Toast.LENGTH_SHORT).show()
 
     /**
      * 长提示
      *
      * @param msg 消息内容
      */
-    protected fun toastShowLong(msg: String) = Toast.makeText(applicationContext, msg, Toast.LENGTH_LONG).show()
+    fun toastShowLong(msg: String) = Toast.makeText(applicationContext, msg, Toast.LENGTH_LONG).show()
 
     /**
      * 转换
@@ -102,15 +102,15 @@ abstract class IBaseActivity<T : Activity> : AppCompatActivity() {
 
 
     /*** Intent 相关操作 ***/
-    protected fun getStringExtra(name: String) = intent.getStringExtra(name) ?: ""
+    fun getStringExtra(name: String) = intent.getStringExtra(name) ?: ""
 
-    protected fun getIntExtra(name: String): Int = intent.getIntExtra(name, 0)
+    fun getIntExtra(name: String): Int = intent.getIntExtra(name, 0)
 
-    protected fun getLongExtra(name: String): Long = intent.getLongExtra(name, 0L)
+    fun getLongExtra(name: String): Long = intent.getLongExtra(name, 0L)
 
-    protected fun getBooleanExtra(name: String): Boolean = intent.getBooleanExtra(name, false)
+    fun getBooleanExtra(name: String): Boolean = intent.getBooleanExtra(name, false)
 
-    protected fun getStringArrayExtra(name: String): Array<String> = intent.getStringArrayExtra(name)
+    fun getStringArrayExtra(name: String): Array<String> = intent.getStringArrayExtra(name)
 
     protected fun startActivity(clazz: Class<*>) {
         startActivity(intent.setClass(instance, clazz))
@@ -122,11 +122,11 @@ abstract class IBaseActivity<T : Activity> : AppCompatActivity() {
         startActivityForResult(intent, requestCode)
     }
 
-    protected fun <T : Parcelable> getParcelableExtra(name: String): T {
+    fun <T : Parcelable> getParcelableExtra(name: String): T {
         return intent.getParcelableExtra(name)
     }
 
-    protected fun <V : Serializable> getSerializableExtra(name: String): V {
+    fun <V : Serializable> getSerializableExtra(name: String): V {
         return intent.getSerializableExtra(name) as V
     }
 }
