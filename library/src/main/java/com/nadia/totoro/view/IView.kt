@@ -15,9 +15,9 @@ interface IView {
 
     fun showEmpty()
 
-    fun toastShow(rId: Int)
+    fun toastShowShort(rId: Int)
 
-    fun toastShow(msg: String)
+    fun toastShowShort(msg: String)
 
     fun getContextView(): Activity
 

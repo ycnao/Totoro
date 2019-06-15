@@ -25,21 +25,11 @@ import java.io.Serializable
  */
 abstract class IBaseActivity<T : Activity> : AppCompatActivity() {
 
-    private lateinit var instance: T
+    lateinit var instance: T
 
-    private lateinit var mActivityManager: NAppManager
+    lateinit var mActivityManager: NAppManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
-//        if (transitionMode != null) {
-//            when (transitionMode) {
-//                ActivityTransitionMode.LEFT -> overridePendingTransition(R.anim.transition_left_in, R.anim.transition_left_out)
-//                ActivityTransitionMode.RIGHT ->overridePendingTransition(R.anim.transition_right_in, R.anim.transition_right_out)
-//                ActivityTransitionMode.TOP -> overridePendingTransition(R.anim.transition_top_in, R.anim.transition_top_out)
-//                ActivityTransitionMode.BOTTOM -> overridePendingTransition(R.anim.transition_bottom_in, R.anim.transition_bottom_out)
-//                ActivityTransitionMode.SCALE -> overridePendingTransition(R.anim.transition_scale_in, R.anim.transition_scale_out)
-//                ActivityTransitionMode.FADE -> overridePendingTransition(R.anim.transition_fade_in, R.anim.transition_fade_out)
-//            }
-//        }
         super.onCreate(savedInstanceState)
         instance = this as T
         mActivityManager = NAppManager.getAppManager()
@@ -47,16 +37,6 @@ abstract class IBaseActivity<T : Activity> : AppCompatActivity() {
     }
 
     override fun finish() {
-//        if (transitionMode != null) {
-//            when (transitionMode) {
-//                ActivityTransitionMode.LEFT -> overridePendingTransition(R.anim.transition_left_in, R.anim.transition_left_out)
-//                ActivityTransitionMode.RIGHT -> overridePendingTransition(R.anim.transition_right_in, R.anim.transition_right_out)
-//                ActivityTransitionMode.TOP -> overridePendingTransition(R.anim.transition_top_in, R.anim.transition_top_out)
-//                ActivityTransitionMode.BOTTOM -> overridePendingTransition(R.anim.transition_bottom_in, R.anim.transition_bottom_out)
-//                ActivityTransitionMode.SCALE -> overridePendingTransition(R.anim.transition_scale_in, R.anim.transition_scale_out)
-//                ActivityTransitionMode.FADE -> overridePendingTransition(R.anim.transition_fade_in, R.anim.transition_fade_out)
-//            }
-//        }
         super.finish()
         finish()
     }
@@ -98,13 +78,13 @@ abstract class IBaseActivity<T : Activity> : AppCompatActivity() {
      * 短提示
      * @param msg 消息内容
      */
-    protected fun toastShowShort(msg: String) = Toast.makeText(applicationContext, msg, Toast.LENGTH_SHORT).show()
+    protected fun toastShow(msg: String) = Toast.makeText(applicationContext, msg, Toast.LENGTH_SHORT).show()
 
     /**
      * 短提示
      * @param resId 资源内容
      */
-    protected fun toastShowShort(resId: Int) = Toast.makeText(applicationContext, resId, Toast.LENGTH_SHORT).show()
+    protected fun toastShow(resId: Int) = Toast.makeText(applicationContext, resId, Toast.LENGTH_SHORT).show()
 
     /**
      * 长提示
