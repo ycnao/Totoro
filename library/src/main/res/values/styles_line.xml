@@ -1,0 +1,21 @@
+<resources>
+
+    <style name="line">
+        <item name="android:background">@color/grey91</item>
+    </style>
+
+    <style name="line_h" parent="line">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0.5dp</item>
+    </style>
+
+    <style name="line_h_15" parent="line_h">
+        <item name="android:layout_marginLeft">@dimen/dimen_15</item>
+    </style>
+
+    <style name="line_v" parent="line">
+        <item name="android:layout_width">0.5dp</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+</resources>

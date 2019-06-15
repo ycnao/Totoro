@@ -1,0 +1,140 @@
+<resources>
+
+	<style name="MyDialog_Them" parent="@android:style/Theme.Dialog">
+		<item name="android:windowFrame">@null</item>
+		<item name="android:windowIsFloating">true</item>
+		<item name="android:windowIsTranslucent">true</item>
+		<item name="android:windowNoTitle">true</item>
+		<item name="android:background">@android:color/transparent</item>
+		<item name="android:windowBackground">@android:color/transparent</item>
+		<item name="android:backgroundDimEnabled">true</item>
+		<item name="android:backgroundDimAmount">0.5</item>
+	</style>
+
+	<!-- listItem cotainer -->
+	<style name="NDialog_listItem_container">
+		<item name="android:background">@drawable/item_bg_select</item>
+	</style>
+
+	<style name="NDialog_container">
+		<item name="android:layout_width">match_parent</item>
+		<item name="android:layout_height">match_parent</item>
+		<item name="android:background">@android:color/transparent</item>
+		<item name="android:gravity">center</item>
+		<item name="android:paddingLeft">10dp</item>
+		<item name="android:paddingRight">10dp</item>
+		<item name="android:paddingBottom">60dp</item>
+		<item name="android:paddingTop">60dp</item>
+	</style>
+
+	<!--  -->
+	<style name="MuDialog_container">
+		<item name="android:layout_width">match_parent</item>
+		<item name="android:layout_height">match_parent</item>
+		<item name="android:background">@android:color/transparent</item>
+		<item name="android:gravity">center</item>
+		<item name="android:paddingLeft">10dp</item>
+		<item name="android:paddingRight">10dp</item>
+		<item name="android:paddingBottom">60dp</item>
+		<item name="android:paddingTop">60dp</item>
+	</style>
+
+	<!-- 内容 -->
+	<style name="MuDialog_content" parent="@android:style/Widget.TextView">
+		<item name="android:textSize">16sp</item>
+		<item name="android:textColor">@color/grey21</item>
+		<item name="android:paddingBottom">15dp</item>
+		<item name="android:paddingTop">15dp</item>
+		<item name="android:gravity">center_vertical</item>
+		<item name="android:paddingLeft">20dp</item>
+		<item name="android:paddingRight">10dp</item>
+	</style>
+
+	<!-- 标题 -->
+	<style name="MuDialog_title" parent="@android:style/Widget.TextView">
+		<item name="android:textSize">15sp</item>
+		<item name="android:textColor">@color/grey31</item>
+		<item name="android:padding">10dp</item>
+		<item name="android:gravity">center_vertical</item>
+	</style>
+
+	<style name="MuDialog_btn_base" parent="@android:style/Widget.Button">
+		<item name="android:layout_width">wrap_content</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:textSize">14sp</item>
+	</style>
+
+	<!-- 标题中按钮 -->
+	<style name="MuDialog_btn_title_base" parent="MuDialog_btn_base">
+		<item name="android:minHeight">24dp</item>
+		<item name="android:minWidth">48dp</item>
+		<item name="android:textSize">12sp</item>
+	</style>
+
+
+	<!-- 标题中取消按钮 -->
+	<style name="MuDialog_btn_cancel_title_1" parent="MuDialog_btn_title_base">
+		<item name="android:text">取消</item>
+		<item name="android:textColor">@color/white</item>
+		<item name="android:background">@drawable/n_dialog_cancel_bg_selector</item>
+	</style>
+
+	<style name="MuDialog_btn_cancel_title_2" parent="MuDialog_btn_title_base">
+		<item name="android:text">取消</item>
+		<item name="android:textColor">@color/grey51</item>
+		<item name="android:background">@drawable/n_dialog_cancel_bg_selector</item>
+	</style>
+
+	<!-- 标题中确定按钮 -->
+	<style name="MuDialog_btn_ok_title" parent="MuDialog_btn_title_base">
+		<item name="android:text">确定</item>
+		<item name="android:textColor">@color/white</item>
+		<item name="android:background">@drawable/n_dialog_okbtn_bg_selector</item>
+	</style>
+
+	<!-- 分割线样式 -->
+	<style name="MuDialog_separate_line">
+		<item name="android:layout_width">match_parent</item>
+		<item name="android:layout_height">1dp</item>
+		<item name="android:background">@color/grey81</item>
+	</style>
+
+	<!-- listItem listView样式 -->
+	<style name="MuDialog_listView" parent="@android:style/Widget.ListView">
+		<item name="android:background">@null</item>
+		<item name="android:cacheColorHint">@android:color/transparent</item>
+		<item name="android:divider">@color/grey81</item>
+		<item name="android:dividerHeight">0.5dp</item>
+		<item name="android:scrollbars">none</item>
+		<!-- <item name="android:dividerPadding">10dp</item> -->
+		<item name="android:paddingBottom">5dp</item>
+	</style>
+
+	<!-- 列表文本数据样式 -->
+	<style name="MuDialog_listItem_text" parent="@android:style/Widget.TextView">
+		<item name="android:textSize">15sp</item>
+		<item name="android:minHeight">40dp</item>
+		<item name="android:textColor">@color/grey31</item>
+		<item name="android:padding">10dp</item>
+		<item name="android:gravity">center_vertical</item>
+	</style>
+
+	<!-- 录音 -->
+	<style name="NDialogstyle">
+		<item name="android:windowBackground">@android:color/transparent</item>
+		<item name="android:windowFrame">@null</item>
+		<item name="android:windowNoTitle">true</item>
+		<item name="android:windowIsFloating">true</item>
+		<item name="android:windowIsTranslucent">true</item>
+		<item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+		<!-- 显示对话框时当前的屏幕是否变暗 -->
+		<item name="android:backgroundDimEnabled">false</item>
+	</style>
+
+	<style name="SpotsDialogDefault" parent="android:Theme.DeviceDefault.Light.Dialog">
+		<item name="DialogTitleAppearance">@android:style/TextAppearance.Medium</item>
+		<item name="DialogTitleText">加载中…</item>
+		<item name="DialogSpotColor">#FF8000</item>
+		<item name="DialogSpotCount">5</item>
+	</style>
+</resources>
