@@ -10,7 +10,7 @@ import android.widget.ListView
  * author: Created by 闹闹 on 2018-10-15
  * version: 1.0.0
  */
-internal class MuListView : ListView {
+class MuListView : ListView {
 
 	constructor(context: Context) : super(context)
 

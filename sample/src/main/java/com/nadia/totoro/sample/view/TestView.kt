@@ -1,5 +1,6 @@
 package com.nadia.totoro.sample.view
 
+import com.nadia.totoro.sample.model.BannerData
 import com.nadia.totoro.view.IView
 
 /**
@@ -9,5 +10,7 @@ import com.nadia.totoro.view.IView
  */
 interface TestView : IView {
 
-    fun test(data: String)
+	fun loadData(data: List<String>)
+
+	fun loadView(data: List<BannerData>)
 }

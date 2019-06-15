@@ -10,8 +10,9 @@ import com.nadia.totoro.sample.view.TestView
  */
 class TestPresenter : BasePresenter<TestView>() {
 
-    fun login(mobile: String) {
-        checkViewAttached()
-        getMvpView()!!.test(mobile)
-    }
+	fun data() {
+		checkViewAttached()
+		val list = mutableListOf("TextView", "ImageView", "ListView", "GridView", "Dialog", "Browser", "TabLayout", "工具包")
+		getMvpView()!!.test(list)
+	}
 }

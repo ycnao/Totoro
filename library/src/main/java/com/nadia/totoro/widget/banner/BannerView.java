@@ -34,11 +34,12 @@ public class BannerView extends FrameLayout {
 	private int viewSize;
 	
 	private static class BannerHandler extends Handler {
-		private WeakReference<BannerView> weakReference = null;
+		
+		private WeakReference<BannerView> weakReference;
 		
 		public BannerHandler(BannerView bannerView) {
 			super(Looper.getMainLooper());
-			this.weakReference = new WeakReference<BannerView>(bannerView);
+			this.weakReference = new WeakReference<>(bannerView);
 		}
 		
 		@Override

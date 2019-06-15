@@ -1,9 +1,13 @@
 package com.nadia.totoro.sample
 
 import android.os.Bundle
+import android.view.View
+import com.nadia.totoro.sample.adapter.MainListAdapter
+import com.nadia.totoro.sample.model.BannerData
 import com.nadia.totoro.sample.presenter.TestPresenter
 import com.nadia.totoro.sample.view.TestView
 import kotlinx.android.synthetic.main.activity_main.*
+import java.util.ArrayList
 
 /**
  *
@@ -13,6 +17,8 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : BaseActivity<MainActivity>(), TestView {
 
 	private val presenter = TestPresenter()
+	private val mListData = ArrayList<String>()
+	private lateinit var mAdapter: MainListAdapter
 
 	override fun initLayout(): Int = R.layout.activity_main
 
@@ -20,11 +26,23 @@ class MainActivity : BaseActivity<MainActivity>(), TestView {
 
 	override fun afterInjectView() {
 		presenter.attachView(this)
-		presenter.login("龙猫框架 测试成功")
+
+		val footerView = View.inflate(this, R.layout.item_footer, null)
+		listView.addFooterView(footerView)
+
+		mAdapter = MainListAdapter(this, mListData, R.layout.item_main)
+		listView.adapter = mAdapter
+
+		presenter.data()
 	}
 
-	override fun test(data: String) {
-		tv_main.text = data
+	override fun loadData(data: List<String>) {
+		mListData.addAll(data)
+		mAdapter.notifyDataSetChanged()
+	}
+
+	override fun loadView(data: List<BannerData>) {
+
 	}
 
 	override fun onDestroy() {

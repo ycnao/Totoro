@@ -108,9 +108,9 @@ abstract class BaseActivity<T : Activity> : IBaseActivity<T>(), IView {
 
     override fun hideLoading() = spotsDialog.dismiss()
 
-    override fun toastShow(rId: Int) = toastShowShort(rId)
+    override fun toastShowShort(rId: Int) = toastShow(rId)
 
-    override fun toastShow(msg: String) = toastShowShort(msg)
+    override fun toastShowShort(msg: String) = toastShow(msg)
 
     override fun showEmpty() {
 //        recycleView.visibility = View.VISIBLE
