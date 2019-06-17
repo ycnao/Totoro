@@ -1,11 +1,12 @@
 package com.nadia.totoro.base
 
-import android.app.Activity
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
+import android.app.Activity
 import android.view.ViewGroup
+import android.view.LayoutInflater
+import android.support.v4.app.Fragment
+
 
 /**
  * 碎片顶层抽象
@@ -92,11 +93,9 @@ abstract class IBaseFragment<A : IBaseActivity<A>, F : Fragment> : Fragment() {
 	protected fun <Q> getAct(q: Class<Q>): Q = activity as Q
 
 	/**
-	 * 意图
+	 * intent
 	 */
-	protected fun <K> startActivity(class1: Class<K>) {
-		startActivity(act.intent.setClass(act, class1))
-	}
+	protected fun <K> startActivity(class1: Class<K>) = startActivity(act.intent.setClass(act, class1))
 
 	/**
 	 * 跳到另外一个activity，注意intent的必须是act.intent

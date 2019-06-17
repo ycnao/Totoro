@@ -25,108 +25,94 @@ import java.io.Serializable
  */
 abstract class IBaseActivity<T : Activity> : AppCompatActivity() {
 
-    lateinit var instance: T
+	lateinit var instance: T
 
-    lateinit var mActivityManager: NAppManager
+	lateinit var mActivityManager: NAppManager
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        instance = this as T
-        mActivityManager = NAppManager.getAppManager()
-        mActivityManager.addActivity(this)
-    }
+	override fun onCreate(savedInstanceState: Bundle?) {
+		super.onCreate(savedInstanceState)
+		instance = this as T
+		mActivityManager = NAppManager.getAppManager()
+		mActivityManager.addActivity(this)
+	}
 
-    override fun finish() {
-        super.finish()
-        finish()
-    }
+	/**
+	 * activity过度类型枚举
+	 */
+	enum class ActivityTransitionMode {
+		LEFT, RIGHT, TOP, BOTTOM, SCALE, FADE
+	}
 
-    /**
-     * activity过度类型枚举
-     */
-    enum class ActivityTransitionMode {
-        LEFT, RIGHT, TOP, BOTTOM, SCALE, FADE
-    }
+	/*** Fragment 相关操作 ***/
+	fun FragmentActivity.addFragment(fragment: Fragment, frameId: Int) = supportFragmentManager.inTransaction { add(frameId, fragment) }
 
-    /*** Fragment 相关操作 ***/
-    fun FragmentActivity.addFragment(fragment: Fragment, frameId: Int) {
-        supportFragmentManager.inTransaction { add(frameId, fragment) }
-    }
+	fun FragmentActivity.replaceFragment(fragment: Fragment, frameId: Int) = supportFragmentManager.inTransaction { replace(frameId, fragment) }
 
-    fun FragmentActivity.replaceFragment(fragment: Fragment, frameId: Int) {
-        supportFragmentManager.inTransaction { replace(frameId, fragment) }
-    }
+	private inline fun FragmentManager.inTransaction(func: FragmentTransaction.() -> Unit) {
+		val fragmentTransaction = beginTransaction()
+		fragmentTransaction.func()
+		fragmentTransaction.commit()
+	}
 
-    private inline fun FragmentManager.inTransaction(func: FragmentTransaction.() -> Unit) {
-        val fragmentTransaction = beginTransaction()
-        fragmentTransaction.func()
-        fragmentTransaction.commit()
-    }
+	/**
+	 * 事件
+	 */
+	fun registerEventBus(subscriber: Any) {
+		if (!EventBus.getDefault().isRegistered(subscriber)) EventBus.getDefault().register(subscriber)
+	}
 
-    /**
-     * 事件
-     */
-    fun registerEventBus(subscriber: Any) {
-        if (!EventBus.getDefault().isRegistered(subscriber)) EventBus.getDefault().register(subscriber)
-    }
+	fun unregisterEventBus(subscriber: Any) {
+		if (EventBus.getDefault().isRegistered(subscriber)) EventBus.getDefault().unregister(subscriber)
+	}
 
-    fun unregisterEventBus(subscriber: Any) {
-        if (EventBus.getDefault().isRegistered(subscriber)) EventBus.getDefault().unregister(subscriber)
-    }
+	/**
+	 * 短提示
+	 * @param msg 消息内容
+	 */
+	fun toastShow(msg: String) = Toast.makeText(applicationContext, msg, Toast.LENGTH_SHORT).show()
 
-    /**
-     * 短提示
-     * @param msg 消息内容
-     */
-    fun toastShow(msg: String) = Toast.makeText(applicationContext, msg, Toast.LENGTH_SHORT).show()
+	/**
+	 * 短提示
+	 * @param resId 资源内容
+	 */
+	fun toastShow(resId: Int) = Toast.makeText(applicationContext, resId, Toast.LENGTH_SHORT).show()
 
-    /**
-     * 短提示
-     * @param resId 资源内容
-     */
-    fun toastShow(resId: Int) = Toast.makeText(applicationContext, resId, Toast.LENGTH_SHORT).show()
+	/**
+	 * 长提示
+	 *
+	 * @param msg 消息内容
+	 */
+	fun toastShowLong(msg: String) = Toast.makeText(applicationContext, msg, Toast.LENGTH_LONG).show()
 
-    /**
-     * 长提示
-     *
-     * @param msg 消息内容
-     */
-    fun toastShowLong(msg: String) = Toast.makeText(applicationContext, msg, Toast.LENGTH_LONG).show()
+	/**
+	 * 转换
+	 */
+	fun textToString(text: TextView): String = text.text.toString()
 
-    /**
-     * 转换
-     */
-    fun editToString(editText: EditText): String = editText.text.toString().trim()
+	fun editToString(editText: EditText): String = editText.text.toString().trim()
 
-    fun textToString(text: TextView): String = text.text.toString()
+	/*** Intent 相关操作 ***/
+	fun getStringExtra(name: String) = intent.getStringExtra(name) ?: ""
 
+	fun getIntExtra(name: String): Int = intent.getIntExtra(name, 0)
 
-    /*** Intent 相关操作 ***/
-    fun getStringExtra(name: String) = intent.getStringExtra(name) ?: ""
+	fun getLongExtra(name: String): Long = intent.getLongExtra(name, 0L)
 
-    fun getIntExtra(name: String): Int = intent.getIntExtra(name, 0)
+	fun getStringArrayExtra(name: String): Array<String> = intent.getStringArrayExtra(name)
 
-    fun getLongExtra(name: String): Long = intent.getLongExtra(name, 0L)
+	fun getBooleanExtra(name: String): Boolean = intent.getBooleanExtra(name, false)
 
-    fun getBooleanExtra(name: String): Boolean = intent.getBooleanExtra(name, false)
+	fun <T : Parcelable> getParcelableExtra(name: String): T = intent.getParcelableExtra(name)
 
-    fun getStringArrayExtra(name: String): Array<String> = intent.getStringArrayExtra(name)
+	fun <V : Serializable> getSerializableExtra(name: String): V = intent.getSerializableExtra(name) as V
 
-    protected fun startActivity(clazz: Class<*>) {
-        startActivity(intent.setClass(instance, clazz))
-        overridePendingTransition(R.anim.transition_scale_in, R.anim.transition_scale_out)
-    }
+	protected fun startActivity(clazz: Class<*>) {
+		startActivity(intent.setClass(instance, clazz))
+		overridePendingTransition(R.anim.transition_scale_in, R.anim.transition_scale_out)
+	}
 
-    protected fun startActivityForResult(clazz: Class<*>, requestCode: Int) {
-        intent.setClass(instance, clazz)
-        startActivityForResult(intent, requestCode)
-    }
-
-    fun <T : Parcelable> getParcelableExtra(name: String): T {
-        return intent.getParcelableExtra(name)
-    }
-
-    fun <V : Serializable> getSerializableExtra(name: String): V {
-        return intent.getSerializableExtra(name) as V
-    }
+	protected fun startActivityForResult(clazz: Class<*>, requestCode: Int) {
+		intent.setClass(instance, clazz)
+		startActivityForResult(intent, requestCode)
+	}
 }
