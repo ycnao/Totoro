@@ -1,52 +1,68 @@
 package com.nadia.totoro.sample
 
 import android.os.Bundle
-import android.view.View
-import com.nadia.totoro.sample.adapter.MainListAdapter
-import com.nadia.totoro.sample.model.BannerData
-import com.nadia.totoro.sample.presenter.TestPresenter
-import com.nadia.totoro.sample.view.TestView
+import android.support.design.widget.BottomNavigationView
+import android.support.v4.app.Fragment
+import android.support.v4.view.ViewPager
+import com.nadia.totoro.adapter.TabFragmentAdapter
 import kotlinx.android.synthetic.main.activity_main.*
-import java.util.ArrayList
 
 /**
  *
  * author: Created by 闹闹 on 2019/6/14
  * version: 1.0.0
  */
-class MainActivity : BaseActivity<MainActivity>(), TestView {
+class MainActivity : BaseActivity<MainActivity>() {
 
-	private val presenter = TestPresenter()
-	private val mListData = ArrayList<String>()
-	private lateinit var mAdapter: MainListAdapter
+    override fun initLayout(): Int = R.layout.activity_main
 
-	override fun initLayout(): Int = R.layout.activity_main
+    override fun initParameter(bundle: Bundle?) {}
 
-	override fun initParameter(bundle: Bundle?) {}
+    override fun afterInjectView() {
+        initView()
+    }
 
-	override fun afterInjectView() {
-		presenter.attachView(this)
+    private fun initView() {
+        val fragments = mutableListOf<Fragment>()
+        fragments.add(0, CoreWorkFragment().newInstance(0))
+        fragments.add(1, TwoFragment().newInstance(1))
+        fragments.add(2, ThreeFragment().newInstance(2))
 
-		val footerView = View.inflate(this, R.layout.item_footer, null)
-		listView.addFooterView(footerView)
+        viewPager.setEnableScroll(false) // false不可滑动
+        viewPager.offscreenPageLimit = 1
+        viewPager.adapter = TabFragmentAdapter(supportFragmentManager, fragments)
+        viewPager.addOnPageChangeListener(onPageChangeListener)
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+    }
 
-		mAdapter = MainListAdapter(this, mListData, R.layout.item_main)
-		listView.adapter = mAdapter
+    /**
+     * 底部控制
+     */
+    private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
+        // 进行点击事件后的逻辑操作
+        when (item.itemId) {
+            R.id.navigation_home -> {
+                viewPager.currentItem = 0
+                return@OnNavigationItemSelectedListener true
+            }
+            R.id.navigation_dashboard -> {
+                viewPager.currentItem = 1
+                return@OnNavigationItemSelectedListener true
+            }
+            R.id.navigation_notifications -> {
+                viewPager.currentItem = 2
+                return@OnNavigationItemSelectedListener true
+            }
+        }
+        false
+    }
 
-		presenter.data()
-	}
+    private val onPageChangeListener = object : ViewPager.OnPageChangeListener {
 
-	override fun loadData(data: List<String>) {
-		mListData.addAll(data)
-		mAdapter.notifyDataSetChanged()
-	}
+        override fun onPageScrollStateChanged(state: Int) {}
 
-	override fun loadView(data: List<BannerData>) {
+        override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
 
-	}
-
-	override fun onDestroy() {
-		super.onDestroy()
-		presenter.detachView()
-	}
+        override fun onPageSelected(position: Int) {}
+    }
 }

@@ -20,12 +20,7 @@ abstract class BaseFragment<A : IBaseActivity<A>, F : Fragment> : IBaseFragment<
 
     lateinit var mApplication: MyApplication
 
-    /**
-     * 注入控件后调用。
-     *
-     * @param savedInstanceState
-     */
-    abstract fun afterInjectView(savedInstanceState: Bundle?)
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,15 +44,6 @@ abstract class BaseFragment<A : IBaseActivity<A>, F : Fragment> : IBaseFragment<
 //				topView.visibility = View.GONE
 //			}
 //		}
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        afterInjectView(savedInstanceState)
     }
 
     override fun showLoading(msg: String?) {

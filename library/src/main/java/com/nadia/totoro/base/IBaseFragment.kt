@@ -44,25 +44,22 @@ abstract class IBaseFragment<A : IBaseActivity<A>, F : Fragment> : Fragment() {
      */
     fun getIndex() = mIndex
 
-
     /**
      * Fragment当前状态是否可见
      */
     private var isVisible: Boolean? = false
 
     /**
-     * 可见时的回调方法
+     * 是否已被加载过一次，第二次就不再去请求数据了
      */
-    private fun onVisible() {
-        lazyLoad()
-    }
+    var mHasLoadedOnce: Boolean = false
 
     /**
-     * 不可见时的回调方法
+     * 注入控件后调用。
+     *
+     * @param savedInstanceState
      */
-    private fun onInvisible() {
-
-    }
+    abstract fun afterInjectView(savedInstanceState: Bundle?)
 
     /**
      * 延迟加载
@@ -93,17 +90,39 @@ abstract class IBaseFragment<A : IBaseActivity<A>, F : Fragment> : Fragment() {
         if (mView == null) {
             // 需要inflate一个布局文件 填充Fragment
             mView = inflater.inflate(initLayout(), container, false)
+
             isPrepared = true
             // 实现懒加载
             lazyLoad()
         }
         //缓存的mView需要判断是否已经被加过parent， 如果有parent需要从parent删除，要不然会发生这个mView已经有parent的错误。
-        val parent = mView!!.parent as ViewGroup
-        parent.removeView(mView)
+        if (mView != null) {
+            val parent = mView?.parent as ViewGroup?
+            parent?.removeView(mView)
+        }
 
         return mView
 
 //        return inflater.inflate(initLayout(), container, false)
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        if (!mHasLoadedOnce) afterInjectView(savedInstanceState)
+    }
+
+    /**
+     * 可见时的回调方法
+     */
+    private fun onVisible() {
+        lazyLoad()
+    }
+
+    /**
+     * 不可见时的回调方法
+     */
+    private fun onInvisible() {
+
     }
 
     /**
