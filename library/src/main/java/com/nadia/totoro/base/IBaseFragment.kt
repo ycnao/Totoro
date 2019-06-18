@@ -28,6 +28,16 @@ abstract class IBaseFragment<A : IBaseActivity<A>, F : Fragment> : Fragment() {
     lateinit var instance: F
 
     /**
+     * 标志位，标志已经初始化完成
+     */
+    var isPrepared: Boolean = false
+
+    /**
+     * inflate布局文件 返回的view
+     */
+    var mView: View? = null
+
+    /**
      * 获取当前碎片索引
      *
      * @return mIndex
@@ -43,12 +53,22 @@ abstract class IBaseFragment<A : IBaseActivity<A>, F : Fragment> : Fragment() {
     /**
      * 可见时的回调方法
      */
-    protected abstract fun onVisible()
+    private fun onVisible() {
+        lazyLoad()
+    }
 
     /**
      * 不可见时的回调方法
      */
-    protected abstract fun onInvisible()
+    private fun onInvisible() {
+
+    }
+
+    /**
+     * 延迟加载
+     * 子类必须重写此方法
+     */
+    protected abstract fun lazyLoad()
 
     protected abstract fun initLayout(): Int
 
@@ -70,11 +90,31 @@ abstract class IBaseFragment<A : IBaseActivity<A>, F : Fragment> : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Create, or inflate the Fragment's UI, and return it.
         // If this Fragment has no UI then return null.
-        return inflater.inflate(initLayout(), container, false)
+        if (mView == null) {
+            // 需要inflate一个布局文件 填充Fragment
+            mView = inflater.inflate(initLayout(), container, false)
+            isPrepared = true
+            // 实现懒加载
+            lazyLoad()
+        }
+        //缓存的mView需要判断是否已经被加过parent， 如果有parent需要从parent删除，要不然会发生这个mView已经有parent的错误。
+        val parent = mView!!.parent as ViewGroup
+        parent.removeView(mView)
+
+        return mView
+
+//        return inflater.inflate(initLayout(), container, false)
     }
 
+    /**
+     * setUserVisibleHint是在onCreateView之前调用的
+     * 设置Fragment可见状态
+     */
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
         super.setUserVisibleHint(isVisibleToUser)
+        /**
+         * 判断是否可见
+         */
         if (userVisibleHint) {
             isVisible = true
             onVisible()
@@ -99,45 +139,5 @@ abstract class IBaseFragment<A : IBaseActivity<A>, F : Fragment> : Fragment() {
     protected fun <T> startActivityForResult(class1: Class<T>, requestCode: Int) {
         act.intent.setClass(act, class1)
         startActivityForResult(act.intent, requestCode)
-    }
-
-    // Called when the Fragment has been detached from its parent Activity.
-    override fun onDetach() {
-        super.onDetach()
-    }
-
-
-    // Called at the end of the active lifetime.
-    override fun onPause() {
-        // Suspend UI updates, threads, or CPU intensive processes
-        // that don't need to be updated when the Activity isn't
-        // the active foreground activity.
-        // Persist all edits or state changes
-        // as after this call the process is likely to be killed.
-        super.onPause()
-    }
-
-    override fun onStart() {
-        super.onStart()
-    }
-
-    override fun onResume() {
-        super.onResume()
-    }
-
-    // Called at the end of the visible lifetime.
-    override fun onStop() {
-        super.onStop()
-    }
-
-    // Called when the Fragment's View has been detached.
-    override fun onDestroyView() {
-        // Clean up resources related to the View.
-        super.onDestroyView()
-    }
-
-    // Called at the end of the full lifetime.
-    override fun onDestroy() {
-        super.onDestroy()
     }
 }
