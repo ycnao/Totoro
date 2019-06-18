@@ -70,6 +70,11 @@ abstract class IBaseFragment<A : IBaseActivity<A>, F : Fragment> : Fragment() {
 
 	override fun onActivityCreated(savedInstanceState: Bundle?) {
 		super.onActivityCreated(savedInstanceState)
+
+	}
+
+	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+		super.onViewCreated(view, savedInstanceState)
 		afterInjectView(savedInstanceState)
 	}
 
