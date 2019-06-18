@@ -3,6 +3,7 @@ package com.nadia.totoro.sample
 import android.app.Activity
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.view.View
 import com.nadia.totoro.base.IBaseActivity
 import com.nadia.totoro.base.IBaseFragment
 import com.nadia.totoro.view.IView
@@ -18,6 +19,13 @@ abstract class BaseFragment<A : IBaseActivity<A>, F : Fragment> : IBaseFragment<
     private lateinit var spotsDialog: SpotsDialog
 
     lateinit var mApplication: MyApplication
+
+    /**
+     * 注入控件后调用。
+     *
+     * @param savedInstanceState
+     */
+    abstract fun afterInjectView(savedInstanceState: Bundle?)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +49,15 @@ abstract class BaseFragment<A : IBaseActivity<A>, F : Fragment> : IBaseFragment<
 //				topView.visibility = View.GONE
 //			}
 //		}
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        afterInjectView(savedInstanceState)
     }
 
     override fun showLoading(msg: String?) {

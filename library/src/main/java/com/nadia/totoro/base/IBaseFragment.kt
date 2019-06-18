@@ -19,116 +19,125 @@ import android.support.v4.app.Fragment
  */
 abstract class IBaseFragment<A : IBaseActivity<A>, F : Fragment> : Fragment() {
 
-	val INDEX = "index"
+    val INDEX = "index"
 
-	var mIndex: Int = -1
+    var mIndex: Int = -1
 
-	lateinit var act: A
+    lateinit var act: A
 
-	lateinit var instance: F
+    lateinit var instance: F
 
-	/**
-	 * 获取当前碎片索引
-	 *
-	 * @return mIndex
-	 */
-	fun getIndex() = mIndex
+    /**
+     * 获取当前碎片索引
+     *
+     * @return mIndex
+     */
+    fun getIndex() = mIndex
 
 
-	/**
-	 * Fragment当前状态是否可见
-	 */
-	private var isVisible: Boolean? = false
+    /**
+     * Fragment当前状态是否可见
+     */
+    private var isVisible: Boolean? = false
 
-	/**
-	 * 可见时的回调方法
-	 */
-	protected abstract fun onVisible()
+    /**
+     * 可见时的回调方法
+     */
+    protected abstract fun onVisible()
 
-	/**
-	 * 不可见时的回调方法
-	 */
-	protected abstract fun onInvisible()
+    /**
+     * 不可见时的回调方法
+     */
+    protected abstract fun onInvisible()
 
-	protected abstract fun initLayout(): Int
+    protected abstract fun initLayout(): Int
 
-	protected abstract fun afterInjectView(savedInstanceState: Bundle?)
 
-	override fun onCreate(savedInstanceState: Bundle?) {
-		/**
-		 * 得到初始化参数包中的数据
-		 */
-		if (arguments != null) mIndex = arguments!!.getInt(INDEX)
-		super.onCreate(savedInstanceState)
-		instance = this as F
-	}
+    override fun onCreate(savedInstanceState: Bundle?) {
+        /**
+         * 得到初始化参数包中的数据
+         */
+        if (arguments != null) mIndex = arguments!!.getInt(INDEX)
+        super.onCreate(savedInstanceState)
+        instance = this as F
+    }
 
-	override fun onAttach(activity: Activity) {
-		super.onAttach(activity)
-		act = activity as A
-	}
+    override fun onAttach(activity: Activity) {
+        super.onAttach(activity)
+        act = activity as A
+    }
 
-	override fun onActivityCreated(savedInstanceState: Bundle?) {
-		super.onActivityCreated(savedInstanceState)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        // Create, or inflate the Fragment's UI, and return it.
+        // If this Fragment has no UI then return null.
+        return inflater.inflate(initLayout(), container, false)
+    }
 
-	}
+    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
+        super.setUserVisibleHint(isVisibleToUser)
+        if (userVisibleHint) {
+            isVisible = true
+            onVisible()
+        } else {
+            isVisible = false
+            onInvisible()
+        }
+    }
 
-	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-		super.onViewCreated(view, savedInstanceState)
-		afterInjectView(savedInstanceState)
-	}
+    protected fun <Q> getAct(q: Class<Q>): Q = activity as Q
 
-	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-		// Create, or inflate the Fragment's UI, and return it.
-		// If this Fragment has no UI then return null.
-		return inflater.inflate(initLayout(), container, false)
-	}
+    /**
+     * intent
+     */
+    protected fun <K> startActivity(class1: Class<K>) = startActivity(act.intent.setClass(act, class1))
 
-	override fun setUserVisibleHint(isVisibleToUser: Boolean) {
-		super.setUserVisibleHint(isVisibleToUser)
-		if (userVisibleHint) {
-			isVisible = true
-			onVisible()
-		} else {
-			isVisible = false
-			onInvisible()
-		}
-	}
+    /**
+     * 跳到另外一个activity，注意intent的必须是act.intent
+     *
+     * @param class1
+     */
+    protected fun <T> startActivityForResult(class1: Class<T>, requestCode: Int) {
+        act.intent.setClass(act, class1)
+        startActivityForResult(act.intent, requestCode)
+    }
 
-	protected fun <Q> getAct(q: Class<Q>): Q = activity as Q
+    // Called when the Fragment has been detached from its parent Activity.
+    override fun onDetach() {
+        super.onDetach()
+    }
 
-	/**
-	 * intent
-	 */
-	protected fun <K> startActivity(class1: Class<K>) = startActivity(act.intent.setClass(act, class1))
 
-	/**
-	 * 跳到另外一个activity，注意intent的必须是act.intent
-	 *
-	 * @param class1
-	 */
-	protected fun <T> startActivityForResult(class1: Class<T>, requestCode: Int) {
-		act.intent.setClass(act, class1)
-		startActivityForResult(act.intent, requestCode)
-	}
+    // Called at the end of the active lifetime.
+    override fun onPause() {
+        // Suspend UI updates, threads, or CPU intensive processes
+        // that don't need to be updated when the Activity isn't
+        // the active foreground activity.
+        // Persist all edits or state changes
+        // as after this call the process is likely to be killed.
+        super.onPause()
+    }
 
-	override fun onPause() {
-		super.onPause()
-	}
+    override fun onStart() {
+        super.onStart()
+    }
 
-	override fun onStart() {
-		super.onStart()
-	}
+    override fun onResume() {
+        super.onResume()
+    }
 
-	override fun onResume() {
-		super.onResume()
-	}
+    // Called at the end of the visible lifetime.
+    override fun onStop() {
+        super.onStop()
+    }
 
-	override fun onStop() {
-		super.onStop()
-	}
+    // Called when the Fragment's View has been detached.
+    override fun onDestroyView() {
+        // Clean up resources related to the View.
+        super.onDestroyView()
+    }
 
-	override fun onDestroy() {
-		super.onDestroy()
-	}
+    // Called at the end of the full lifetime.
+    override fun onDestroy() {
+        super.onDestroy()
+    }
 }
